@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HomeService } from '../../services/home.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -12,8 +14,8 @@ export class HomeComponent {
 
   frmOrdenTrabajo !: FormGroup;
 
-  constructor(private modal: NgbModal, private formBuilder : FormBuilder) {
-    
+  constructor(private modal: NgbModal, private formBuilder: FormBuilder, private home: HomeService) {
+
   }
 
   ngOnInit() {
@@ -24,13 +26,33 @@ export class HomeComponent {
     });
   }
 
-  guardaraOT(){
 
+  //GUARDAR NUEVA OT
+  guardaraOT() {
+    this.home.guardarOT(this.frmOrdenTrabajo.value).subscribe({
+      next: (resp: any) => {
+        console.log(resp);
+        this.frmOrdenTrabajo.reset();
+        this.modal.dismissAll();
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Orden de trabajo creada con éxito.'
+        })
+
+      }, error: (error: any) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No fue posible crear la orden de trabajo, intente nuevamente.',
+        })
+      }
+    })
   }
 
 
-  modalOT(modal : any){
-    this.modal.open(modal, { size : "ml"})
+  modalOT(modal: any) {
+    this.modal.open(modal, { size: "ml" })
   }
 
   closeModalNuevo() {
