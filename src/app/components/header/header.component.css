@@ -1,0 +1,13 @@
+.navbar-nav a {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.navbar-nav a:hover{
+    color: lightblue;
+}
+
+header{
+    background-color:rgb(0,76,171);
+}

@@ -1,0 +1,39 @@
+<app-header></app-header>
+
+<main class="container-fluid">
+    <hr>
+    <div class="text-center">
+        <button class="btn btn-primary fw-bold my-1" (click)="modalOT(modalnew)"><i
+                class="fa-solid fa-file-circle-plus"></i> CREAR ORDEN DE TRABAJO</button>
+    </div>
+    <hr>
+    <div>
+    </div>
+</main>
+
+
+<!-- Nuevo Orden de trabajo -->
+<ng-template #modalnew let-modal>
+    <div class="modal-header bg-primary">
+        <div class="modal-title text-white fw-bold">Nuevo Orden de trabajo</div>
+        <button class="btn-close" aria-label="close" type="button" (click)="closeModalNuevo()">
+        </button>
+    </div>
+    <form (ngSubmit)="guardaraOT()" [formGroup]="frmOrdenTrabajo">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm">
+                    <label class="form-label">JOBID COLINA: <span class="asteric" title="Requerido">*</span></label>
+                    <input type="text" readonly formControlName="jobIdColina" class="form-control">
+                </div>
+                <div class="col-sm">
+                    <label class="form-label">FECHA AVISO:</label>
+                    <input type="date" formControlName="fechaAviso" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-secondary" [disabled]="!frmOrdenTrabajo.valid">Crear OT</button>
+        </div>
+    </form>
+</ng-template>
