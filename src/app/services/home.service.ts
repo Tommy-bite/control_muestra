@@ -10,11 +10,27 @@ export class HomeService {
   constructor(private http: HttpClient) { }
 
   guardarOT(data : any){
-    return this.http.post(environment.apiUrl + 'guadarOT', JSON.stringify(data), {
+    return this.http.post(environment.apiUrl + 'guardarOT', JSON.stringify(data), {
       headers: new HttpHeaders ({
         'Content-Type': 'application/json'
       })
       
+    });
+  }
+
+  obtieneJobId(){
+    return this.http.get(environment.apiUrl + 'obtieneJobId',  {
+      headers: new HttpHeaders ({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  obtieneClientes(){
+    return this.http.get(environment.apiUrl + 'obtieneClientes',  {
+      headers: new HttpHeaders ({
+        'Content-Type': 'application/json'
+      })
     });
   }
 }

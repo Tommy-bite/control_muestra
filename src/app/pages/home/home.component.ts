@@ -3,6 +3,8 @@ import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HomeService } from '../../services/home.service';
 import Swal from 'sweetalert2';
+import { stringify } from 'querystring';
+import { Cliente } from '../../interfaces/cliente';
 
 
 @Component({
@@ -13,9 +15,10 @@ import Swal from 'sweetalert2';
 export class HomeComponent {
 
   frmOrdenTrabajo !: FormGroup;
+  jobIDColinaInput: any;
+  clientes : Cliente[] = [];
 
   constructor(private modal: NgbModal, private formBuilder: FormBuilder, private home: HomeService) {
-
   }
 
   ngOnInit() {
@@ -23,15 +26,20 @@ export class HomeComponent {
     this.frmOrdenTrabajo = this.formBuilder.group({
       fechaAviso: ['', Validators.required],
       jobIdColina: ['', Validators.required],
+      cliente: ['', Validators.required],
     });
+    this.home.obtieneClientes().subscribe({
+      next: (resp: any) => {
+        console.log(resp)
+        this.clientes = resp;
+      }
+    })
   }
-
 
   //GUARDAR NUEVA OT
   guardaraOT() {
     this.home.guardarOT(this.frmOrdenTrabajo.value).subscribe({
       next: (resp: any) => {
-        console.log(resp);
         this.frmOrdenTrabajo.reset();
         this.modal.dismissAll();
         Swal.fire({
@@ -52,6 +60,13 @@ export class HomeComponent {
 
 
   modalOT(modal: any) {
+    //Obtiene JOB ID
+    this.home.obtieneJobId().subscribe({
+      next: (resp: any) => {
+        const number = parseInt(resp[0].item) + 1;
+        this.jobIDColinaInput = 'ACL' + number
+      }
+    })
     this.modal.open(modal, { size: "ml" })
   }
 

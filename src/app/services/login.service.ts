@@ -6,7 +6,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class LoginService {
-
   constructor(private http: HttpClient) { }
   login(data: any) {
     return this.http.post(environment.apiUrl + 'login', JSON.stringify(data), {
@@ -15,5 +14,4 @@ export class LoginService {
       })
     });
   }
-
 }

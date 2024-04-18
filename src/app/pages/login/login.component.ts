@@ -14,6 +14,9 @@ export class LoginComponent {
   formLogin!: FormGroup;
   correo: any;
   password: any;
+  isLoading = false;
+  isPassword = false;
+  type = '';
 
   constructor(private fnBuilder: FormBuilder, private loginservices: LoginService, private router: Router) {
     this.formLogin = this.fnBuilder.group({
@@ -24,12 +27,24 @@ export class LoginComponent {
 
   ngOninit() { }
 
+  mostrarPassword(){
+    this.isPassword = !this.isPassword;
+
+    if(this.isPassword){
+      this.type = 'text';
+    }else{
+      this.type = 'password';
+    }
+  }
+
   login() {
+    this.isLoading = true;
     const correoValue = this.formLogin.get('correo')?.value;
     const passwordValue = this.formLogin.get('password')?.value;
     let data = { correo: correoValue, password: passwordValue };
     this.loginservices.login(data).subscribe({
       next: (resp: any) => {
+        this.isLoading = false;
         localStorage.clear();
         this.router.navigateByUrl('/home');
         localStorage.setItem("ID Usuario", resp.idUsuario);
@@ -40,6 +55,7 @@ export class LoginComponent {
         localStorage.setItem("idCargo", resp.idCargo);
         localStorage.setItem("Nombre Cargo", resp.nombreCargo);
       }, error: (error: any) => {
+        this.isLoading = false;
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -48,5 +64,7 @@ export class LoginComponent {
       }
     });
   }
+
+
 
 }
